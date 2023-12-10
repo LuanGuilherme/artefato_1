@@ -24,7 +24,7 @@ const driver = new Builder()
 const chrome = require('selenium-webdriver/chrome');
 
 const chromeOptions = new chrome.Options();
-chromeOptions.addArguments('user-data-dir=/home/mintuser/Documentos/Cordeiro');
+//chromeOptions.addArguments('user-data-dir=/home/mintuser/Documentos/Cordeiro');
 chromeOptions.addArguments('--no-sandbox');
 chromeOptions.addArguments('--disable-extensions');
 //chromeOptions.addArguments('--disable-infobars');
@@ -68,6 +68,23 @@ Then('I should be on the Contato page', {timeout: 60 * 1000}, async function () 
     const page_name =  url.split('/')[url.split('/').length - 1];
     expect(page_name).to.equal(this.actualAnswer);
 });
+
+
+
+// Change language to english
+When('I click on the USA flag', {timeout: 60 * 1000}, async function () {
+    await driver.findElement(By.xpath("/html/body/div/section/div/header/nav/div/div[2]/i[2]")).click();
+    await driver.sleep(500);
+});
+
+Then('the site language should be english', {timeout: 60 * 1000}, async function () {
+    const element = await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/header/nav/div/ul/li[4]/a")), 30000);
+    await driver.wait(until.elementIsVisible(element), 30000);
+    const elem_text = await element.getText();
+    expect(elem_text).to.equal("About");
+    await driver.findElement(By.xpath("/html/body/div/section/div/header/nav/div/div[2]/i[1]")).click();
+});
+
 
 
 // Add a layer
@@ -137,7 +154,7 @@ When('I fill the required data', {timeout: 60 * 1000}, async function () {
     await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).click();
     await driver.sleep(100);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).sendKeys("testes");
-    await driver.sleep(100);
+    await driver.sleep(200);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
     await driver.sleep(100);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("cintiaalmeida");
@@ -233,7 +250,7 @@ When('press Submit', {timeout: 60 * 1000}, async function () {
 });
 
 Then('I should see my message on the list', {timeout: 60 * 1000}, async function () {
-    await driver.sleep(3000);
+    await driver.sleep(5000);
     const element = await driver.wait(until.elementLocated(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/div/div/div[2]/div[1]/div[2]/div[1]/div/div[2]/p")), 60000);
     await driver.wait(until.elementIsVisible(element), 30000);
     const elem_text = await element.getText();
@@ -242,7 +259,9 @@ Then('I should see my message on the list', {timeout: 60 * 1000}, async function
     await driver.findElement(By.xpath("/html/body/div[2]/div/ul/li[3]/button")).click();
 });
 
-// Entre wrong password
+
+
+// Enter wrong password
 
 When('I fill the field Senha with estudante.da.each@usp.br', {timeout: 60 * 1000}, async function () {
     await driver.sleep(500);
@@ -257,7 +276,42 @@ Then('I should see an Error message', {timeout: 60 * 1000}, async function () {
     expect(elem_text).to.equal("E-mail ou senha incorreta!");
 });
 
-/*
-Then I should see an Error message
-    /html/body/div[2]/div/div[2]/div[2]/p E-mail ou senha incorreta!
-*/
+
+
+// Add a keyword
+
+When('I click Palavras-chave', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/div/div/ul/li[3]/a")), 60000);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/div/ul/li[3]/a")).click();
+});
+
+Then('I should be on the Palavras-chave page', {timeout: 60 * 1000}, async function () {
+    const element = await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/h6")), 30000);
+    await driver.wait(until.elementIsVisible(element), 30000);
+    const elem_exists = await element.isDisplayed();
+    expect(elem_exists).to.equal(true);
+});
+
+When('I fill the keyword field with palavraria', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("//*[@id=\"inputName\"]")), 60000);
+    this.keywordRand = 'palavra ' + Math.random().toString().replace('0.', '')
+    await driver.findElement(By.xpath("//*[@id=\"inputName\"]")).sendKeys(this.keywordRand);
+});
+
+When('press the Submit button', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div/div[2]/a")), 60000);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div/div[2]/a")).click();
+});
+
+Then('I should see my keyword on the right panel', {timeout: 60 * 1000}, async function () {
+    await driver.sleep(2000);
+    const div = await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[2]/div/div/div"));
+    const child_divs = await div.findElements(By.xpath('./*'));
+    const i = child_divs.length;    
+    const element = await driver.wait(until.elementLocated(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[2]/div/div/div/div[" + i.toString() + "]/div[1]")), 30000);
+    await driver.wait(until.elementIsVisible(element), 30000);
+    const elem_text = await element.getText();
+    expect(elem_text).to.equal(this.keywordRand);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/header/nav/div/div[1]/div/button")).click();
+    await driver.findElement(By.xpath("/html/body/div[2]/div/ul/li[3]/button")).click();
+});
