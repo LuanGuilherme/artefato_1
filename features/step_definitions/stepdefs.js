@@ -37,29 +37,40 @@ const driver = new Builder()
 
 
 
+// Navigate to sobre
+
 Given('I am on the Pauliceia 2.0 home page', {timeout: 60 * 1000}, async function () {
     await driver.get('https://pauliceia.unifesp.br/portal/home');
 });
 
 When('I follow Sobre', {timeout: 60 * 1000}, async function () {
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/header/nav/div/ul/li[4]/a")).click();
-    const url = driver.getCurrentUrl() + '';
-    this.actualAnswer =  url.split('/')[url.split('/').length - 1];
+    this.actualAnswer =  'about';
 });
 
 Then('I should be on the Sobre page', {timeout: 60 * 1000}, async function () {
-    const url = driver.getCurrentUrl() + '';
+    const url = await driver.getCurrentUrl() + '';
     const page_name =  url.split('/')[url.split('/').length - 1];
     expect(page_name).to.equal(this.actualAnswer);
 });
 
 
 
+// Navigate to contato
+
+When('I follow Contato', {timeout: 60 * 1000}, async function () {
+    await driver.findElement(By.xpath("/html/body/div/section/div/header/nav/div/ul/li[5]/a")).click();
+    this.actualAnswer =  'contact';
+});
+
+Then('I should be on the Contato page', {timeout: 60 * 1000}, async function () {
+    const url = await driver.getCurrentUrl() + '';
+    const page_name =  url.split('/')[url.split('/').length - 1];
+    expect(page_name).to.equal(this.actualAnswer);
+});
 
 
-/*Given('I am on the Pauliceia 2.0 home page', {timeout: 60 * 1000}, async function () {
-    await driver.get('https://pauliceia.unifesp.br/portal/home');
-});*/
+// Add a layer
 
 When('I follow Entrar', {timeout: 60 * 1000}, async function () {
     await driver.wait(until.elementLocated(By.xpath("/html/body/div/section/div/header/nav/div/div[1]/a")), 60000);
@@ -74,18 +85,18 @@ Then('I should be on the Login page', {timeout: 60 * 1000}, async function () {
 });
 
 When('I fill the field E-mail with estudante.da.each@usp.br', {timeout: 60 * 1000}, async function () {
-    driver.sleep(3000);
+    await driver.sleep(500);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/section/div[1]/div/form/div[1]/input")).sendKeys("estudante.da.each@usp.br");
 });
 
 When('I fill the field Senha with estudante.da.each@usp.br123', {timeout: 60 * 1000}, async function () {
-    driver.sleep(30000);
+    await driver.sleep(500);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/section/div[1]/div/form/div[2]/input")).sendKeys("estudante.da.each@usp.br123");
 });
 
 When('I press Entrar', {timeout: 60 * 1000}, async function () {
+    await driver.sleep(3000);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/section/div[1]/div/form/div[3]/button")).click();
-    driver.sleep(5000);
 });
 
 Then('I should be logged on', {timeout: 60 * 1000}, async function () {
@@ -97,7 +108,7 @@ Then('I should be logged on', {timeout: 60 * 1000}, async function () {
 
 When('I click user icon', {timeout: 60 * 1000}, async function () {
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/header/nav/div/div[1]/div/button")).click();
-    driver.sleep(5000);
+    driver.sleep(3000);
 });
 
 When('follow Painel', {timeout: 60 * 1000}, async function () {
@@ -124,12 +135,17 @@ When('I fill the required data', {timeout: 60 * 1000}, async function () {
     this.nomeCamada = Math.random().toString().replace('0.', '');
     await driver.findElement(By.xpath("//*[@id=\"inputName\"]")).sendKeys("teste camada " + this.nomeCamada);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).click();
+    await driver.sleep(100);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).sendKeys("testes");
+    await driver.sleep(100);
     await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
+    await driver.sleep(100);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("cintiaalmeida");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
+    await driver.sleep(100);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("testeEACH");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
+    await driver.sleep(100);
     await driver.findElement(By.xpath("//*[@id=\"inputDescription\"]")).sendKeys("Teste de adição de camada");
     await driver.findElement(By.xpath("//*[@id=\"inputReference\"]")).sendKeys("DE TAL, Fulano. Especialização em temas gerais.");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[4]/div/div[2]/a")).click();
@@ -151,12 +167,9 @@ When('I fill the time data', {timeout: 60 * 1000}, async function () {
     await driver.findElement(By.xpath("//*[@id=\"start_date\"]")).sendKeys("01/01/1900");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("data");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
-    await driver.sleep(1000);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[3]/div/div/div[1]/input")).sendKeys("YYYY-MM-DD");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[3]/div/div/div[1]/input")).sendKeys(Key.RETURN);
-    await driver.sleep(1000);
     await driver.findElement(By.xpath("//*[@id=\"end_date\"]")).sendKeys("01/01/2000");
-    await driver.sleep(1000);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[2]/div[2]/div/div/div[1]/input")).sendKeys("datafim");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[2]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[2]/div[3]/div/div/div[1]/input")).sendKeys("YYYY-MM-DD");
@@ -195,6 +208,9 @@ Then('I should see test number on the list', {timeout: 60 * 1000}, async functio
     await driver.wait(until.elementIsVisible(element), 30000);
     const elem_text = await element.getText();
     expect(elem_text).to.equal("TÍTULO: teste camada " + this.nomeCamada);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/div/div/div/div[1]/button")).click();
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/header/nav/div/div[1]/div/button")).click();
+    await driver.findElement(By.xpath("/html/body/div[2]/div/ul/li[3]/button")).click();
 });
 
 AfterAll({timeout: 60 * 1000}, async function(){
@@ -202,10 +218,46 @@ AfterAll({timeout: 60 * 1000}, async function(){
     await driver.quit();
 });
 
+
+
+// Add a post
+
+When('I add a message', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("//*[@id=\"inputReference\"]")), 60000);
+    await driver.findElement(By.xpath("//*[@id=\"inputReference\"]")).sendKeys("ceci nest pas une test");
+    await driver.sleep(1000);
+});
+
+When('press Submit', {timeout: 60 * 1000}, async function () {
+    await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/div/div/div[2]/div[1]/div[1]/div/a")).click();
+});
+
+Then('I should see my message on the list', {timeout: 60 * 1000}, async function () {
+    await driver.sleep(3000);
+    const element = await driver.wait(until.elementLocated(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/div/div/div[2]/div[1]/div[2]/div[1]/div/div[2]/p")), 60000);
+    await driver.wait(until.elementIsVisible(element), 30000);
+    const elem_text = await element.getText();
+    expect(elem_text).to.equal("ceci nest pas une test");
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/header/nav/div/div[1]/div/button")).click();
+    await driver.findElement(By.xpath("/html/body/div[2]/div/ul/li[3]/button")).click();
+});
+
+// Entre wrong password
+
+When('I fill the field Senha with estudante.da.each@usp.br', {timeout: 60 * 1000}, async function () {
+    await driver.sleep(500);
+    await driver.findElement(By.xpath("/html/body/div/section/div/div/section/div[1]/div/form/div[2]/input")).sendKeys("estudante.da.each@usp.br");
+});
+
+Then('I should see an Error message', {timeout: 60 * 1000}, async function () {
+    await driver.sleep(1000);
+    const element = await driver.wait(until.elementLocated(By.xpath("/html/body/div[2]/div/div[2]/div[2]/p")), 30000);
+    await driver.wait(until.elementIsVisible(element), 30000);
+    const elem_text = await element.getText();
+    expect(elem_text).to.equal("E-mail ou senha incorreta!");
+});
+
 /*
-    When I follow Mapa
-    And I click Camadas
-    And click on the layers controll
-    And search for teste number
-    Then I should see test number on the list
+Then I should see an Error message
+    /html/body/div[2]/div/div[2]/div[2]/p E-mail ou senha incorreta!
 */
