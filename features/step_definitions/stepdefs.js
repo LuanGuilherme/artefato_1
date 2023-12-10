@@ -24,10 +24,10 @@ const driver = new Builder()
 const chrome = require('selenium-webdriver/chrome');
 
 const chromeOptions = new chrome.Options();
-chromeOptions.addArguments('user-data-dir=/home/mintuser/Documentos/Pauliceia');
+chromeOptions.addArguments('user-data-dir=/home/mintuser/Documentos/Cordeiro');
 chromeOptions.addArguments('--no-sandbox');
 chromeOptions.addArguments('--disable-extensions');
-chromeOptions.addArguments('--disable-infobars');
+//chromeOptions.addArguments('--disable-infobars');
 chromeOptions.addArguments('--disable-dev-shm-usage'); // Adicionada esta opção
 
 const driver = new Builder()
@@ -123,15 +123,17 @@ Then('I should be on the Nova Camada page', {timeout: 60 * 1000}, async function
 When('I fill the required data', {timeout: 60 * 1000}, async function () {
     this.nomeCamada = Math.random().toString().replace('0.', '');
     await driver.findElement(By.xpath("//*[@id=\"inputName\"]")).sendKeys("teste camada " + this.nomeCamada);
-    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).sendKeys("teste");
-    await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/button")).click();
+    await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).click();
+    await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).sendKeys("testes");
+    await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("cintiaalmeida");
-    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("teste");
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("testeEACH");
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
     await driver.findElement(By.xpath("//*[@id=\"inputDescription\"]")).sendKeys("Teste de adição de camada");
     await driver.findElement(By.xpath("//*[@id=\"inputReference\"]")).sendKeys("DE TAL, Fulano. Especialização em temas gerais.");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[4]/div/div[2]/a")).click();
     await driver.findElement(By.xpath("//*[@id=\"Upload\"]")).sendKeys(__dirname + '/' + 'camada_teste.zip');
-    await driver.findElement(By.xpath("/html/body/div/section/div/div/main/div/div/div/div[1]/div/div/form/div[2]/button")).click();
 });
 
 When('I press Enviar', {timeout: 60 * 1000}, async function () {
@@ -148,15 +150,51 @@ Then('I should be on the Dados Temporais page', {timeout: 60 * 1000}, async func
 When('I fill the time data', {timeout: 60 * 1000}, async function () {
     await driver.findElement(By.xpath("//*[@id=\"start_date\"]")).sendKeys("01/01/1900");
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("data");
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
+    await driver.sleep(1000);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[3]/div/div/div[1]/input")).sendKeys("YYYY-MM-DD");
-    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div[1]/div/div/form/div[1]/div[2]/div/div/div[1]/input")).sendKeys("teste");
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[1]/div[3]/div/div/div[1]/input")).sendKeys(Key.RETURN);
+    await driver.sleep(1000);
     await driver.findElement(By.xpath("//*[@id=\"end_date\"]")).sendKeys("01/01/2000");
+    await driver.sleep(1000);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[2]/div[2]/div/div/div[1]/input")).sendKeys("datafim");
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[2]/div[2]/div/div/div[1]/input")).sendKeys(Key.RETURN);
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[2]/div[3]/div/div/div[1]/input")).sendKeys("YYYY-MM-DD");
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[2]/div[3]/div/div/div[1]/input")).sendKeys(Key.RETURN);
 });
 
 When('I press the Enviar button', {timeout: 60 * 1000}, async function () {
     await driver.findElement(By.xpath("/html/body/div[1]/section/div/div/main/div/div/div/div/div/div/div/form/div[3]/div/a")).click();
+});
+
+When('I follow Mapa', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/header/nav/div/ul/li[2]/a")), 60000);
+    await driver.sleep(3000);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/header/nav/div/ul/li[2]/a")).click();
+});
+
+When('I click Camadas', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/p")), 60000);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/p")).click();
+});
+
+When('click on the layers controll', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/section/div/div/div/button/div")), 60000);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/section/div/div/div/button/div")).click();
+});
+
+When('search for teste number', {timeout: 60 * 1000}, async function () {
+    await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/div/div/div/div[2]/div/input")), 60000);
+    await driver.sleep(5000);
+    await driver.findElement(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/div/div/div/div[2]/div/input")).sendKeys("teste camada " + this.nomeCamada);
+});
+
+Then('I should see test number on the list', {timeout: 60 * 1000}, async function () {
+    await driver.sleep(5000);
+    const element = await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/section/div/section/div/div[2]/div/div/div/div[2]/article[1]/div/div[1]/p[1]")), 30000);
+    await driver.wait(until.elementIsVisible(element), 30000);
+    const elem_text = await element.getText();
+    expect(elem_text).to.equal("TÍTULO: teste camada " + this.nomeCamada);
 });
 
 AfterAll({timeout: 60 * 1000}, async function(){
@@ -164,20 +202,10 @@ AfterAll({timeout: 60 * 1000}, async function(){
     await driver.quit();
 });
 
-/*Feature: User can manually add a layer //*[@id="keywordsSelect"]
-  Scenario: Add a layer
-    Given I am on the Pauliceia 2.0 home page
-    When I follow Entrar
-    Then I should be on the Login page
-    When I fill the field E-mail with estudante.da.each@usp.br
-    When I fill the field Senha with estudante.da.each@usp.br123
-    When I press Entrar
-    Then I should be logged on
-    When I click user icon
-    And follow Painel
-    Then I should be on the Profile page
-    When I follow Nova Camada
-    Then I should be on the Nova Camada page
-    When fill the required data
-    And press Enviar
-    Then I should get an error*/
+/*
+    When I follow Mapa
+    And I click Camadas
+    And click on the layers controll
+    And search for teste number
+    Then I should see test number on the list
+*/

@@ -17,4 +17,8 @@ Feature: User can manually add a layer
     Then I should be on the Dados Temporais page
     When I fill the time data
     And I press the Enviar button
-    Then I should get an error
+    When I follow Mapa
+    And I click Camadas
+    And click on the layers controll
+    And search for teste number
+    Then I should see test number on the list
